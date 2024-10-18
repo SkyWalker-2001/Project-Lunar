@@ -155,7 +155,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 1
-  jumpForce: 8
+  jumpForce: 12
+  runBegin: 0
+  isGrounded: 0
+  groundCheck: 1.4
+  whatIsGround:
+    serializedVersion: 2
+    m_Bits: 64
   _rigidbody2D: {fileID: 85555754}
 --- !u!70 &85555753
 CapsuleCollider2D:
@@ -207,7 +213,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 3
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -516,8 +522,8 @@ GameObject:
   - component: {fileID: 1811275151}
   - component: {fileID: 1811275150}
   - component: {fileID: 1811275149}
-  m_Layer: 0
-  m_Name: platform
+  m_Layer: 6
+  m_Name: Platform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -641,5 +647,5 @@ SceneRoots:
   m_Roots:
   - {fileID: 519420032}
   - {fileID: 619394802}
-  - {fileID: 85555756}
   - {fileID: 1811275151}
+  - {fileID: 85555756}

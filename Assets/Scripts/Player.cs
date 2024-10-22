@@ -7,29 +7,36 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
 
-    public Rigidbody2D _rigidbody2D;
+    private Rigidbody2D _rigidbody2D;
+
+    private Animator anim;
+
+    [SerializeField] private bool isRunning_Anim_Bool;
 
     [Header("Move Info")]
-    public float moveSpeed;
-    public float jumpForce;
-    public bool runBegin = false;
+    [SerializeField] private float moveSpeed;
+    [SerializeField] private float jumpForce;
+    [SerializeField] private bool runBegin = false;
 
     [Header("Collision Info")]
 
-    public float groundCheck; 
+    [SerializeField] private float groundCheck; 
     private bool isGrounded;
-    public LayerMask whatIsGround;
+    [SerializeField] private LayerMask whatIsGround;
 
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        _rigidbody2D = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        Animator_Controller();
+
         if (runBegin)
         {
             _rigidbody2D.velocity = new Vector2(moveSpeed, _rigidbody2D.velocity.y);
@@ -38,6 +45,15 @@ public class Player : MonoBehaviour
         CheckCollision();
 
         CheckInput();
+    }
+
+    private void Animator_Controller()
+    {
+        isRunning_Anim_Bool = _rigidbody2D.velocity.x != 0;
+        
+        anim.SetBool("isRunning", isRunning_Anim_Bool);
+        anim.SetBool("isGrounded", isGrounded);
+        anim.SetFloat("yVelocity", _rigidbody2D.velocity.y);
     }
 
     private void CheckCollision()

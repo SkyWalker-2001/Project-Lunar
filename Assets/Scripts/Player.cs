@@ -16,7 +16,7 @@ public class Player : MonoBehaviour
     [Header("Move Info")]
     [SerializeField] private float moveSpeed;
     [SerializeField] private float jumpForce;
-    [SerializeField] private bool runBegin = false;
+    [SerializeField] private bool Player_Unlock = false;
 
     [Header("Collision Info")]
 
@@ -37,7 +37,7 @@ public class Player : MonoBehaviour
     {
         Animator_Controller();
 
-        if (runBegin)
+        if (Player_Unlock)
         {
             _rigidbody2D.velocity = new Vector2(moveSpeed, _rigidbody2D.velocity.y);
         }
@@ -53,7 +53,8 @@ public class Player : MonoBehaviour
         
         anim.SetBool("isRunning", isRunning_Anim_Bool);
         anim.SetBool("isGrounded", isGrounded);
-        anim.SetFloat("yVelocity", _rigidbody2D.velocity.y);
+        anim.SetFloat("Y_Velocity", _rigidbody2D.velocity.y);
+        anim.SetFloat("X_Velocity", _rigidbody2D.velocity.x);
     }
 
     private void CheckCollision()
@@ -65,7 +66,7 @@ public class Player : MonoBehaviour
     {
         if (Input.GetButtonDown("Fire2"))
         {
-            runBegin = true;
+            Player_Unlock = true;
         }
 
         // if(Input.GetKeyDown(KeyCode.Space)){

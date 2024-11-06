@@ -6,77 +6,103 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    // Components
+    private Rigidbody2D _rigidbody2D;  // Reference to the Rigidbody2D component for physics-based movement
+    private Animator anim;             // Reference to the Animator component for controlling animations
 
-    private Rigidbody2D _rigidbody2D;
-
-    private Animator anim;
-
-    [SerializeField] private bool isRunning_Anim_Bool;
+    // Animator parameters
+    [SerializeField] private bool isRunning_Anim_Bool; // Animation boolean to trigger running animation
 
     [Header("Move Info")]
-    [SerializeField] private float moveSpeed;
-    [SerializeField] private float jumpForce;
-    [SerializeField] private bool Player_Unlock = false;
+    [SerializeField] private float moveSpeed;          // Horizontal movement speed of the player
+    [SerializeField] private float jumpForce;          // Force applied when the player jumps
+    [SerializeField] private float doubleJumpForce;    // Force applied when performing a double jump
+
+    private bool can_Double_Jump;      // Tracks if the player can perform a double jump
+
+    [SerializeField] private bool Player_Unlock = false; // Unlocks player movement upon input
 
     [Header("Collision Info")]
+    [SerializeField] private float groundCheck;       // Distance to check for ground collision
+    private bool isGrounded;                          // Checks if the player is on the ground
+    [SerializeField] private LayerMask whatIsGround;  // LayerMask defining what is considered "ground"
 
-    [SerializeField] private float groundCheck; 
-    private bool isGrounded;
-    [SerializeField] private LayerMask whatIsGround;
-
-
-    // Start is called before the first frame update
     void Start()
     {
+        // Initialize components
         _rigidbody2D = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
     }
 
-    // Update is called once per frame
     void Update()
     {
+        // Update the animator parameters based on player states
         Animator_Controller();
 
+        // If movement is unlocked, move the player at the specified speed
         if (Player_Unlock)
         {
             _rigidbody2D.velocity = new Vector2(moveSpeed, _rigidbody2D.velocity.y);
         }
 
+        // Check if the player is grounded and manage jumping logic
         CheckCollision();
 
+        // Check player input for specific actions
         CheckInput();
     }
 
+    // Updates animator parameters to match the player’s state and velocity
     private void Animator_Controller()
     {
-        isRunning_Anim_Bool = _rigidbody2D.velocity.x != 0;
-        
+        isRunning_Anim_Bool = _rigidbody2D.velocity.x != 0; // Set running animation based on horizontal velocity
+
+        // Update animator variables for each relevant state
+        anim.SetBool("canDoubleJump", can_Double_Jump);
         anim.SetBool("isRunning", isRunning_Anim_Bool);
         anim.SetBool("isGrounded", isGrounded);
-        anim.SetFloat("Y_Velocity", _rigidbody2D.velocity.y);
-        anim.SetFloat("X_Velocity", _rigidbody2D.velocity.x);
+        anim.SetFloat("Y_Velocity", _rigidbody2D.velocity.y); // Vertical velocity for jump/fall animations
+        anim.SetFloat("X_Velocity", _rigidbody2D.velocity.x); // Horizontal velocity for movement animations
     }
 
+    // Raycast to detect if the player is on the ground
     private void CheckCollision()
     {
         isGrounded = Physics2D.Raycast(transform.position, Vector2.down, groundCheck, whatIsGround);
     }
 
+    // Processes input for jump and unlocking movement
     private void CheckInput()
     {
-        if (Input.GetButtonDown("Fire2"))
+        if (Input.GetButtonDown("Fire2")) // Unlocks movement when the Fire2 button is pressed
         {
             Player_Unlock = true;
         }
 
-        // if(Input.GetKeyDown(KeyCode.Space)){
-        if (Input.GetButtonDown("Jump") && isGrounded)
+        if (Input.GetButtonDown("Jump")) // Initiates jump when Jump button is pressed
         {
-            _rigidbody2D.velocity = new Vector2(_rigidbody2D.velocity.x, jumpForce);
+            jump_Button();
         }
     }
 
-    public void OnDrawGizmos(){
-        Gizmos.DrawLine(transform.position,new Vector2(transform.position.x, transform.position.y - groundCheck));
+    // Executes jump logic, including double jump capability
+    private void jump_Button()
+    {
+        if (isGrounded) // If player is grounded, perform a normal jump
+        {
+            can_Double_Jump = true; // Allow double jump after the initial jump
+            _rigidbody2D.velocity = new Vector2(_rigidbody2D.velocity.x, jumpForce);
+        }
+        else if (can_Double_Jump) // If player is in the air and double jump is allowed
+        {
+            can_Double_Jump = false;      // Disable double jump after usage
+            _rigidbody2D.velocity = new Vector2(_rigidbody2D.velocity.x, doubleJumpForce); // Apply double jump force
+        }
+    }
+
+    // Visual aid to show the ground-check ray in the Scene view for debugging
+    public void OnDrawGizmos()
+    {
+        Gizmos.DrawLine(transform.position, new Vector2(transform.position.x, transform.position.y - groundCheck));
     }
 }

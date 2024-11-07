@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEditor.Callbacks;
 using UnityEngine;
@@ -24,8 +22,11 @@ public class Player : MonoBehaviour
 
     [Header("Collision Info")]
     [SerializeField] private float groundCheck;       // Distance to check for ground collision
-    private bool isGrounded;                          // Checks if the player is on the ground
     [SerializeField] private LayerMask whatIsGround;  // LayerMask defining what is considered "ground"
+    [SerializeField] private Transform wall_Check;
+    [SerializeField] private Vector2 wallCheckSize;
+    private bool isGrounded;                          // Checks if the player is on the ground
+    private bool wall_Detected;
 
     void Start()
     {
@@ -40,9 +41,14 @@ public class Player : MonoBehaviour
         Animator_Controller();
 
         // If movement is unlocked, move the player at the specified speed
-        if (Player_Unlock)
+        if (Player_Unlock && !wall_Detected)
         {
-            _rigidbody2D.velocity = new Vector2(moveSpeed, _rigidbody2D.velocity.y);
+            Movement();
+        }
+
+        if (isGrounded)
+        {
+            can_Double_Jump = true; // Allow double jump after the initial jump
         }
 
         // Check if the player is grounded and manage jumping logic
@@ -50,6 +56,11 @@ public class Player : MonoBehaviour
 
         // Check player input for specific actions
         CheckInput();
+    }
+
+    private void Movement()
+    {
+        _rigidbody2D.velocity = new Vector2(moveSpeed, _rigidbody2D.velocity.y);
     }
 
     // Updates animator parameters to match the player’s state and velocity
@@ -69,6 +80,7 @@ public class Player : MonoBehaviour
     private void CheckCollision()
     {
         isGrounded = Physics2D.Raycast(transform.position, Vector2.down, groundCheck, whatIsGround);
+        wall_Detected = Physics2D.BoxCast(wall_Check.position, wallCheckSize, 0, Vector2.zero, 0, whatIsGround);
     }
 
     // Processes input for jump and unlocking movement
@@ -90,7 +102,6 @@ public class Player : MonoBehaviour
     {
         if (isGrounded) // If player is grounded, perform a normal jump
         {
-            can_Double_Jump = true; // Allow double jump after the initial jump
             _rigidbody2D.velocity = new Vector2(_rigidbody2D.velocity.x, jumpForce);
         }
         else if (can_Double_Jump) // If player is in the air and double jump is allowed
@@ -104,5 +115,6 @@ public class Player : MonoBehaviour
     public void OnDrawGizmos()
     {
         Gizmos.DrawLine(transform.position, new Vector2(transform.position.x, transform.position.y - groundCheck));
+        Gizmos.DrawWireCube(wall_Check.position, wallCheckSize);
     }
 }

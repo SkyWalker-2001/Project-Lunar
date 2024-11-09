@@ -1170,6 +1170,8 @@ MonoBehaviour:
   Player_Unlock: 0
   slide_Speed: 25
   slide_Time: 0.4
+  slide_PowerUp_Time: 1
+  slide_PowerUp_TimeCounter: 0
   groundCheck: 1.4
   whatIsGround:
     serializedVersion: 2

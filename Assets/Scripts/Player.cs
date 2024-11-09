@@ -25,8 +25,11 @@ public class Player : MonoBehaviour
     [Header("Slide Info")]
     [SerializeField] private float slide_Speed;
     [SerializeField] private float slide_Time;
+    [SerializeField] private float slide_PowerUp_Time;
+    [SerializeField] private float slide_PowerUp_TimeCounter;
     private float slide_Timer_Counter;
     private bool is_Sliding;
+
 
     [Header("Collision Info")]
     [SerializeField] private float groundCheck;       // Distance to check for ground collision
@@ -51,6 +54,7 @@ public class Player : MonoBehaviour
 
         slide_Timer_Counter = slide_Timer_Counter - Time.deltaTime;
 
+        slide_PowerUp_TimeCounter = slide_PowerUp_TimeCounter - Time.deltaTime;
 
         // If movement is unlocked, move the player at the specified speed
         if (Player_Unlock && !wall_Detected)
@@ -126,17 +130,17 @@ public class Player : MonoBehaviour
 
         if(Input.GetKeyDown(KeyCode.LeftShift))
         {
-            SlideButton();
-            
+            SlideButton();       
         }
     }
 
     private void SlideButton()
     {
-        if(_rigidbody2D.velocity.x != 0)
+        if(_rigidbody2D.velocity.x != 0 && slide_PowerUp_TimeCounter < 0)
         {
             is_Sliding = true;
             slide_Timer_Counter = slide_Time;
+            slide_PowerUp_TimeCounter = slide_PowerUp_Time;
         }
     }
 

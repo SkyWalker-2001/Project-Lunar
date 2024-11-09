@@ -1,3 +1,4 @@
+using System;
 using Unity.VisualScripting;
 using UnityEditor.Callbacks;
 using UnityEngine;
@@ -11,6 +12,7 @@ public class Player : MonoBehaviour
     // Animator parameters
     [SerializeField] private bool isRunning_Anim_Bool; // Animation boolean to trigger running animation
 
+
     [Header("Move Info")]
     [SerializeField] private float moveSpeed;          // Horizontal movement speed of the player
     [SerializeField] private float jumpForce;          // Force applied when the player jumps
@@ -19,6 +21,12 @@ public class Player : MonoBehaviour
     private bool can_Double_Jump;      // Tracks if the player can perform a double jump
 
     [SerializeField] private bool Player_Unlock = false; // Unlocks player movement upon input
+
+    [Header("Slide Info")]
+    [SerializeField] private float slide_Speed;
+    [SerializeField] private float slide_Time;
+    private float slide_Timer_Counter;
+    private bool is_Sliding;
 
     [Header("Collision Info")]
     [SerializeField] private float groundCheck;       // Distance to check for ground collision
@@ -40,6 +48,10 @@ public class Player : MonoBehaviour
         // Update the animator parameters based on player states
         Animator_Controller();
 
+
+        slide_Timer_Counter = slide_Timer_Counter - Time.deltaTime;
+
+
         // If movement is unlocked, move the player at the specified speed
         if (Player_Unlock && !wall_Detected)
         {
@@ -54,12 +66,26 @@ public class Player : MonoBehaviour
         // Check if the player is grounded and manage jumping logic
         CheckCollision();
 
+        CheckForSliding();
+
         // Check player input for specific actions
         CheckInput();
     }
 
+    private void CheckForSliding()
+    {
+        if(slide_Timer_Counter < 0)
+        {
+            is_Sliding = false;
+        }
+    }
+
     private void Movement()
     {
+        if(is_Sliding)
+        {
+            _rigidbody2D.velocity = new Vector2(slide_Speed, _rigidbody2D.velocity.y);
+        }
         _rigidbody2D.velocity = new Vector2(moveSpeed, _rigidbody2D.velocity.y);
     }
 
@@ -69,11 +95,13 @@ public class Player : MonoBehaviour
         isRunning_Anim_Bool = _rigidbody2D.velocity.x != 0; // Set running animation based on horizontal velocity
 
         // Update animator variables for each relevant state
+        anim.SetFloat("Y_Velocity", _rigidbody2D.velocity.y); // Vertical velocity for jump/fall animations
+        anim.SetFloat("X_Velocity", _rigidbody2D.velocity.x); // Horizontal velocity for movement animations
+        
         anim.SetBool("canDoubleJump", can_Double_Jump);
         anim.SetBool("isRunning", isRunning_Anim_Bool);
         anim.SetBool("isGrounded", isGrounded);
-        anim.SetFloat("Y_Velocity", _rigidbody2D.velocity.y); // Vertical velocity for jump/fall animations
-        anim.SetFloat("X_Velocity", _rigidbody2D.velocity.x); // Horizontal velocity for movement animations
+        anim.SetBool("isSliding", is_Sliding);
     }
 
     // Raycast to detect if the player is on the ground
@@ -94,6 +122,21 @@ public class Player : MonoBehaviour
         if (Input.GetButtonDown("Jump")) // Initiates jump when Jump button is pressed
         {
             jump_Button();
+        }
+
+        if(Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            SlideButton();
+            
+        }
+    }
+
+    private void SlideButton()
+    {
+        if(_rigidbody2D.velocity.x != 0)
+        {
+            is_Sliding = true;
+            slide_Timer_Counter = slide_Time;
         }
     }
 

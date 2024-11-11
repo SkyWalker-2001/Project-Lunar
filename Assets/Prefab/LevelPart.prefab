@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1807855677789469886}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Start_Position
   m_TagString: Untagged
   m_Icon: {fileID: 5721338939258241955, guid: 0000000000000000d000000000000000, type: 0}
@@ -40,7 +40,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 159324213110874611}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: End_Position
   m_TagString: Untagged
   m_Icon: {fileID: 5721338939258241955, guid: 0000000000000000d000000000000000, type: 0}
@@ -156,7 +156,7 @@ BoxCollider2D:
   m_GameObject: {fileID: 3526193719092002502}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 37a8eb656af12494fb957289356de78f, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -201,7 +201,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1310588761251952228}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: LevelPart
   m_TagString: Untagged
   m_Icon: {fileID: 0}

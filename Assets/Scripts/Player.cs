@@ -40,6 +40,8 @@ public class Player : MonoBehaviour
     private bool isSliding_RC;                        // Tracks if something blocks sliding
     private bool wall_Detected;                       // Tracks if a wall is detected
 
+    public bool ledge_Detection;
+
     private void Start()
     {
         // Initialize components
@@ -190,6 +192,8 @@ public class Player : MonoBehaviour
         isGrounded = Physics2D.Raycast(transform.position, Vector2.down, groundCheck, whatIsGround);
         isSliding_RC = Physics2D.Raycast(transform.position, Vector2.up, sealingCheck, whatIsGround);
         wall_Detected = Physics2D.BoxCast(wall_Check.position, wallCheckSize, 0, Vector2.zero, 0, whatIsGround);
+
+        Debug.Log(ledge_Detection);
     }
 
     /// <summary>

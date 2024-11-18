@@ -972,6 +972,8 @@ GameObject:
   m_Component:
   - component: {fileID: 79555811}
   - component: {fileID: 79555812}
+  - component: {fileID: 79555813}
+  - component: {fileID: 79555814}
   m_Layer: 0
   m_Name: LedgeCheck
   m_TagString: Untagged
@@ -1006,11 +1008,83 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74ebb0bef3e6b4eef8614f6e5678a11c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: 0.2
+  radius: 0.15
   whatIsGround:
     serializedVersion: 2
     m_Bits: 64
   player: {fileID: 85555752}
+--- !u!61 &79555813
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 79555810}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.12743235, y: 0.26690078}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.7548647, y: 0.47002554}
+  m_EdgeRadius: 0
+--- !u!50 &79555814
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 79555810}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 1
+  m_Constraints: 0
 --- !u!1 &80154883
 GameObject:
   m_ObjectHideFlags: 0
@@ -1213,9 +1287,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isRunning_Anim_Bool: 0
-  moveSpeed: 5
+  max_Speed: 20
+  speed_Multiplier: 1.15
+  milestone_Inceaser: 50
+  moveSpeed: 12
   jumpForce: 18
-  doubleJumpForce: 0
+  doubleJumpForce: 18
   Player_Unlock: 0
   slide_Speed: 10
   slide_Time: 0.4
@@ -1228,6 +1305,8 @@ MonoBehaviour:
   wall_Check: {fileID: 1814034426}
   wallCheckSize: {x: 0.3, y: 2.3}
   ledge_Detection: 0
+  offset1: {x: -0.496, y: -1.3}
+  offset2: {x: 0.519, y: 1.233}
 --- !u!70 &85555753
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -1328,8 +1407,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 70903221
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 2d357ed942a805246b8a48dad9f4829d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -2543,7 +2622,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &187216717
@@ -5875,7 +5954,7 @@ MonoBehaviour:
   m_Intensity: 1
   m_LightVolumeIntensity: 1
   m_LightVolumeIntensityEnabled: 0
-  m_ApplyToSortingLayers: 00000000
+  m_ApplyToSortingLayers: 00000000b5e53904
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
@@ -11784,7 +11863,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!210 &1075107292
@@ -15892,7 +15971,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!210 &1421857111
@@ -21350,11 +21429,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1310588761251952228, guid: bc650879e332b442ebf0c8b585063e6d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 19.87
+      value: 19.31
       objectReference: {fileID: 0}
     - target: {fileID: 1310588761251952228, guid: bc650879e332b442ebf0c8b585063e6d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.15
+      value: 12.79
       objectReference: {fileID: 0}
     - target: {fileID: 1310588761251952228, guid: bc650879e332b442ebf0c8b585063e6d, type: 3}
       propertyPath: m_LocalPosition.z

@@ -202,6 +202,16 @@ public class Player : MonoBehaviour
         }
     }
 
+        private void Ledge_Climb_Over()
+    {
+        // Finalize ledge climb
+        can_Climb = false;
+        transform.position = climb_Over_Position;
+        Invoke("AllowLedgeGrab", .1f);
+    }
+
+    private void AllowLedgeGrab() => can_Grab_Ledge = true;
+
     /// <summary>
     /// Detects ledges and sets the player's position to climb over.
     /// </summary>
@@ -302,7 +312,14 @@ public class Player : MonoBehaviour
         anim.SetBool("isGrounded", isGrounded);
         anim.SetBool("isSliding", is_Sliding);
         anim.SetBool("canClimb", can_Climb);
+        
+        if(_rigidbody2D.velocity.y > -20)
+        {
+            anim.SetBool("canRool",true);
+        }
     }
+
+    private void RollAnimFinish() => anim.SetBool("canRool", false);
 
     private void OnDrawGizmos()
     {

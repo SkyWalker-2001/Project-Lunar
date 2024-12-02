@@ -161,7 +161,8 @@ PlayerSettings:
   resetResolutionOnWindowResize: 0
   androidSupportedAspectRatio: 1
   androidMaxAspectRatio: 2.1
-  applicationIdentifier: {}
+  applicationIdentifier:
+    Standalone: com.DefaultCompany.Project-Lunar
   buildNumber:
     Standalone: 0
     VisionOS: 0
@@ -659,8 +660,10 @@ PlayerSettings:
   scriptingDefineSymbols: {}
   additionalCompilerArguments: {}
   platformArchitecture: {}
-  scriptingBackend: {}
-  il2cppCompilerConfiguration: {}
+  scriptingBackend:
+    Standalone: 0
+  il2cppCompilerConfiguration:
+    WebGL: 0
   il2cppCodeGeneration: {}
   managedStrippingLevel:
     EmbeddedLinux: 1

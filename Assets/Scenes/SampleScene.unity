@@ -1286,6 +1286,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e139a2191b43c437cbfa02f3b4f75852, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  knockBack_Dir: {x: -12, y: 7}
   isRunning_Anim_Bool: 0
   max_Speed: 20
   speed_Multiplier: 1.15

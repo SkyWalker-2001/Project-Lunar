@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -6,6 +5,10 @@ public class Player : MonoBehaviour
     // References to components
     private Rigidbody2D _rigidbody2D;  // Physics-based movement handler
     private Animator anim;            // Controls player animations
+
+    [Header("Knockbacked Info")]
+    [SerializeField] private Vector2 knockBack_Dir;
+    private bool is_Knocked;
 
     // Animation Parameters
     [SerializeField, Tooltip("Tracks if the player is running (used for animations).")]
@@ -105,6 +108,13 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
+
+
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            Knock_Back();
+        }
+
         // Check for collisions with the ground, walls, and other elements
         CheckCollision();
 
@@ -114,6 +124,11 @@ public class Player : MonoBehaviour
         // Update slide cooldown timers
         slide_Timer_Counter -= Time.deltaTime;
         slide_PowerUp_TimeCounter -= Time.deltaTime;
+
+        if (is_Knocked)
+        {
+            return;
+        }
 
         // Manage sliding mechanics
         CheckForSliding();
@@ -139,6 +154,14 @@ public class Player : MonoBehaviour
         // Process player input for actions like jumping and sliding
         HandleInput();
     }
+
+    private void Knock_Back()
+    {
+        is_Knocked = true;
+        _rigidbody2D.velocity = knockBack_Dir;
+    }
+
+    private void Cancel_KnockBack() => is_Knocked = false;
 
     #region SpeedController
     /// <summary>
@@ -202,7 +225,7 @@ public class Player : MonoBehaviour
         }
     }
 
-        private void Ledge_Climb_Over()
+    private void Ledge_Climb_Over()
     {
         // Finalize ledge climb
         can_Climb = false;
@@ -312,10 +335,11 @@ public class Player : MonoBehaviour
         anim.SetBool("isGrounded", isGrounded);
         anim.SetBool("isSliding", is_Sliding);
         anim.SetBool("canClimb", can_Climb);
-        
-        if(_rigidbody2D.velocity.y > -20)
+        anim.SetBool("isKnocked", is_Knocked);
+
+        if (_rigidbody2D.velocity.y > -20)
         {
-            anim.SetBool("canRool",true);
+            anim.SetBool("canRool", true);
         }
     }
 
